@@ -27,6 +27,9 @@
 
 <script>
 import {checkUser} from '../../service/UserService'
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
 export default {
     data () {
         return {user: {name: '', password: ''}, errorInfo: {isError: false, name: '', password: ''}, disableBtn: true}

@@ -1,0 +1,68 @@
+1.多个视图依赖同一状态
+2.不同视图的行为变更同一状态
+
+1.基本概念
+state，驱动应用的数据源
+view，视图
+actions，相应view上用户行为导致的状态变化
+
+2.核心store，包含大部分状态
+mutations用来管理action，需要显式的的commit到mutation
+
+3.单一状态树
+用一个对象就包含了全部的应用层级状态
+...表示对象展开符 stage-4状态
+当映射的计算属性的名称与 state 的子节点名称相同时，给 mapState 传一个字符串数组
+如果有些状态严格属于单个组件，最好还是作为组件的局部状态。
+getter 在通过属性访问时是作为 Vue 的响应式系统的一部分缓存其中的。
+getter 在通过方法访问时，每次都会去进行调用，而不会缓存结果
+mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性
+
+mutations: {
+  increment (state, payload) {
+    state.count += payload.amount
+  }
+}
+store.commit('increment', {
+  amount: 10
+})
+
+最好提前在你的 store 中初始化好所有所需属性。
+
+当需要在对象上添加新属性时，你应该
+
+使用 Vue.set(obj, 'newProp', 123), 或者
+
+以新对象替换老对象。例如，利用 stage-3 的对象展开运算符我们可以这样写：
+
+state.obj = { ...state.obj, newProp: 123 }
+
+使用常量替代 Mutation 事件类型
+
+Mutation 必须是同步函数
+
+action可以是异步的
+需要commit
+也可以使用dispatch
+组合action解决异步的方法
+1. async / await
+2.Promise
+
+Module
+Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、
+甚至是嵌套子模块——从上至下进行同样方式的分割。
+
+对于模块内部的 mutation 和 getter，接收的第一个参数是模块的局部状态对象。
+对于模块内部的 action，局部状态通过 context.state 暴露出来，根节点状态则为 context.rootState：
+对于模块内部的 getter，根节点状态会作为第三个参数暴露出来：
+rootState 和 rootGetter 会作为第三和第四参数传入 getter，也会通过 context 对象的属性传入 action
+
+默认情况下，模块内部的 action、mutation 和 getter 是注册在全局命名空间的——
+这样使得多个模块能够对同一 mutation 或 action 作出响应。
+
+你可以通过添加 namespaced: true 的方式使其成为带命名空间的模块。
+当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名。
+若需要在全局命名空间内分发 action 或提交 mutation，将 { root: true } 作为第三参数传给 dispatch 或 commit 即可。
+若需要在带命名空间的模块注册全局 action，你可添加 root: true
+你可以通过使用 createNamespacedHelpers 创建基于某个命名空间辅助函数。
+它返回一个对象，对象里有新的绑定在给定命名空间值上的组件绑定辅助函数：
