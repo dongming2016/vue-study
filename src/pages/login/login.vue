@@ -26,19 +26,21 @@
 </template>
 
 <script>
-import {checkUser} from '../../service/UserService'
-import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
+import { loginService } from '@/service/UserService'
+import { USER_LOGIN } from '@/store/mutation-type'
+
 export default {
     data () {
         return {user: {name: '', password: ''}, errorInfo: {isError: false, name: '', password: ''}, disableBtn: true}
     },
     methods: {
         login: function () {
+            // 初始化用户状态
             this.errorInfo.isError = false
             this.errorInfo.name = ''
             this.errorInfo.password = ''
+            this.$store.commit(USER_LOGIN, { userState: false })
+
             if (!this.user.name) {
                 this.errorInfo.name = '请输入用户名!'
                 this.errorInfo.isError = true
@@ -48,12 +50,14 @@ export default {
                 this.errorInfo.isError = true
             }
             if (this.user.name && this.user.password) {
-                checkUser(this.user).then((datas) => {
+                loginService(this.user).then((datas) => {
                     const data = datas.data
                     this.errorInfo.name = data.name
                     this.errorInfo.password = data.password
                     this.errorInfo.isError = data.isError
+                    this.$store.commit(USER_LOGIN, { userState: !data.isError })
                 }).catch((err) => {
+                    this.$store.commit(USER_LOGIN, { userState: false })
                     console.log(err)
                 })
             }
