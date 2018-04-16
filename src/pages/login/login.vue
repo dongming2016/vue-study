@@ -19,7 +19,6 @@
             <div v-if="errorInfo.password" class="login-error">* {{errorInfo.password}}</div>
             <button @click="login" class="login-button"
             v-bind:class="{'btn-disable': !this.user.name || !this.user.password}">登录</button>
-            <button @click="logout">退出</button>
             <div class="lost-password"><router-link to="password">忘记密码？</router-link></div>
         </div>
     </section>
@@ -28,17 +27,13 @@
 
 <script>
 import { loginService } from '@/service/UserService'
-import { USER_LOGIN, USER_LOGOUT } from '@/store/mutation-type'
-import { mapActions } from 'Vuex'
+import { USER_LOGIN } from '@/store/mutation-type'
 
 export default {
     data () {
         return {user: {name: '', password: ''}, errorInfo: {isError: false, name: '', password: ''}, disableBtn: true}
     },
     methods: {
-        ...mapActions({
-            logout: USER_LOGOUT
-        }),
         login: function () {
             // 初始化用户状态
             this.errorInfo.isError = false

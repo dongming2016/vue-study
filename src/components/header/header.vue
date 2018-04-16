@@ -27,15 +27,22 @@
                 <span v-else><router-link to="/usermanager/login">登录</router-link></span>
             </li>
         </ul>
+            <button @click="logout">退出</button>
     </header>
 </template>
 
 <script>
+import { USER_LOGOUT } from '@/store/mutation-type'
+import { mapActions } from 'Vuex'
+
 export default {
     data: function () {
         return {header: {items: [{id: 1, name: 'hello', url: 'xxx'}], msg: []}}
     },
-    mounted: function () {
+    methods: {
+        ...mapActions({
+            logout: USER_LOGOUT
+        })
     }
 }
 </script>
