@@ -14,26 +14,42 @@
         <input type="password" required placeholder="请再次输入密码" v-model="user.repassword">
       </div>
     </div>
-    <div><div class="button">确定</div></div>
+    <div><div class="button" @click="OK">确定</div></div>
     <div>
-      <router-link to='userinfo'>其它信息</router-link>
+      <router-link to='userinfo'>完善其它信息</router-link>
     </div>
     <alertbox v-bind:alertbox="alertbox" v-if="alertbox.show">
-        <div slot="content">hello</div>
+        <div slot="content">{{ alertbox.msg }}</div>
     </alertbox>
   </div>
 </template>
 
 <script>
-import alertbox from '../../components/alertbox/alertbox'
+import alertbox from '@/components/alertbox/alertbox'
+import { registerService } from '@/service/UserService'
 export default {
     data: function () {
-        return { user: {name: '', password: '', repassword: ''}, errorInfo: {password: ''}, alertbox: {show: false, title: {show: true}} }
+        return { user: {name: '', password: '', repassword: ''}, errorInfo: {password: ''}, alertbox: {show: false, title: {show: true}}, msg: '' }
     },
     methods: {
         OK: function () {
             if (this.user.password !== this.user.repassword) {
                 this.errorInfo.password = '密码不一致'
+            } else {
+                registerService(this.user).then((data) => {
+                    if (data.data) {
+                        this.alertbox.show = true
+                        this.alertbox.msg = '注册成功'
+                        setTimeout(() => {
+                            this.alertbox.show = false
+                            this.$router.push('login')
+                        }, 10000)
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                    this.alertbox.show = true
+                    this.alertbox.msg = '注册失败'
+                })
             }
         }
     },
