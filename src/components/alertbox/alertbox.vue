@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="mask"></div>
-      <div class="alertbox">
+      <div class="alertbox" v-dragable>
           <div class="alertbox-content">
             <div class="alertbox-title" v-if="alertbox.title.show">{{alertbox.title.content}}</div>
             <slot name="content"></slot>
