@@ -29,7 +29,7 @@ import alertbox from '@/components/alertbox/alertbox'
 import { registerService } from '@/service/UserService'
 export default {
     data: function () {
-        return { user: {name: '', password: '', repassword: ''}, errorInfo: {password: ''}, alertbox: {show: true, title: {show: true}}, msg: '' }
+        return { user: {name: '', password: '', repassword: ''}, errorInfo: {password: ''}, alertbox: {show: false, title: {show: true}}, msg: '' }
     },
     methods: {
         OK: function () {
