@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import login from '@/pages/login/login'
 import register from '@/pages/register/register'
 import personalInfo from '@/pages/userinfo/personal-info'
+import studentsManagement from '@/pages/students-management/students-info'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
             path: '/personal-info',
             name: 'personal-info',
             component: personalInfo
+        },
+        {
+            path: '/students-management',
+            name: 'students-management',
+            component: studentsManagement
         }
     ]
 })

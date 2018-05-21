@@ -22,6 +22,17 @@
             <div class="lost-password"><router-link to="password">忘记密码？</router-link></div>
         </div>
     </section>
+    <el-button @click="visible = true">Button</el-button>
+     <el-dialog :visible.sync="visible" title="Hello world">
+      <p>Try Element</p>
+    </el-dialog>
+    <el-date-picker 
+        v-model="vulue1"
+        type="date"
+        placeholder="选择日期"
+        :picker-options="pickerOptions1"
+        @change="sayHello()"
+        ></el-date-picker>
 </div>
 </template>
 
@@ -31,9 +42,19 @@ import { USER_LOGIN } from '@/store/mutation-type'
 
 export default {
     data () {
-        return {user: {name: '', password: ''}, errorInfo: {isError: false, name: '', password: ''}, disableBtn: true}
+        return {user: {name: '', password: ''}, errorInfo: {isError: false, name: '', password: ''}, 
+                disableBtn: true, visible: false,
+                pickerOptions1: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now()
+                    }
+                }, 
+                vulue1: ''}
     },
     methods: {
+        sayHello: function() {
+            
+        },
         login: function () {
             // 初始化用户状态
             this.errorInfo.isError = false
